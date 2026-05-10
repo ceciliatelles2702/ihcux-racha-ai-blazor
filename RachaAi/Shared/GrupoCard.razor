@@ -1,0 +1,30 @@
+@using RachaAi.Models
+
+<div class="card shadow-sm p-3 mb-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h5 class="fw-bold">@Grupo.Nome</h5>
+            <span class="badge bg-primary">@Grupo.Categoria</span>
+        </div>
+
+        <div>
+            @if (Grupo.UsuarioDeve)
+            {
+                <span class="text-danger fw-bold">
+                    - @Grupo.Valor.ToString("C")
+                </span>
+            }
+            else
+            {
+                <span class="text-success fw-bold">
+                    + @Grupo.Valor.ToString("C")
+                </span>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Grupo Grupo { get; set; }
+}

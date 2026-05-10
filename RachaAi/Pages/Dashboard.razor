@@ -1,0 +1,115 @@
+@page "/app-rachaai"
+
+@using RachaAi.Models
+@using RachaAi.Shared
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Olá, Cecília 👋</h2>
+        <p class="text-muted">
+            Aqui está o resumo das suas finanças coletivas
+        </p>
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow rounded-4 p-3 bg-success text-white">
+                <h6>Total a Receber</h6>
+                <h2 class="fw-bold">R$ 420,00</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow rounded-4 p-3 bg-danger text-white">
+                <h6>Total a Pagar</h6>
+                <h2 class="fw-bold">R$ 180,00</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow rounded-4 p-3 bg-primary text-white">
+                <h6>Saldo Geral</h6>
+                <h2 class="fw-bold">R$ 240,00</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card border-0 shadow rounded-4 p-4 mb-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold">Seus Grupos</h4>
+
+            <input type="text"
+                   class="form-control w-50"
+                   placeholder="Buscar grupo..."
+                   @bind="busca"
+                   @bind:event="oninput" />
+        </div>
+
+        @if (GruposFiltrados.Count == 0)
+        {
+            <div class="alert alert-info rounded-3">
+                Você ainda não participa de nenhum grupo.
+            </div>
+        }
+        else
+        {
+            @foreach (var grupo in GruposFiltrados)
+            {
+                <GrupoCard Grupo="grupo" />
+            }
+        }
+
+    </div>
+
+    <button class="btn btn-warning shadow-lg rounded-circle position-fixed fw-bold"
+            style="
+                width:70px;
+                height:70px;
+                bottom:25px;
+                right:25px;
+                font-size:28px;">
+        +
+    </button>
+
+</div>
+
+@code {
+
+    private string busca = "";
+
+    private List<Grupo> grupos = new()
+    {
+        new Grupo
+        {
+            Nome = "República",
+            Categoria = "Casa",
+            Valor = 120,
+            UsuarioDeve = true
+        },
+
+        new Grupo
+        {
+            Nome = "Churrasco de Domingo",
+            Categoria = "Lazer",
+            Valor = 80,
+            UsuarioDeve = false
+        },
+
+        new Grupo
+        {
+            Nome = "Viagem BH",
+            Categoria = "Turismo",
+            Valor = 300,
+            UsuarioDeve = true
+        }
+    };
+
+    private List<Grupo> GruposFiltrados =>
+        grupos.Where(g =>
+            g.Nome.Contains(busca, StringComparison.OrdinalIgnoreCase))
+        .ToList();
+}
